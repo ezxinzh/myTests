@@ -11,6 +11,7 @@
 #include <mysql/mysql.h>
 #include <memory>
 #include <boost/shared_ptr.hpp>
+#include <vector>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ typedef struct
 }MySQLConInfo;
 
 typedef boost::shared_ptr<MySQLConInfo> ConInfoPtr;
+//typedef std::shared_ptr<MYSQL> mysqlPtr;
 
 class sqlClass
 {
@@ -33,12 +35,14 @@ public:
     virtual ~sqlClass();
 
     void SetMySQLConInfo(char* server, char* username, char* password, char* database, int port);// 设置连接信息
-    bool Open();  // 打开连接
-    void Close(); // 关闭连接
+    bool Open();
+    void Close();
+    bool select(const string& queryStr, vector<vector<string>>& data);
 
 private:
     MYSQL* mysql_;
     ConInfoPtr ConInfo_;
+    MYSQL_RES *result_;     //use to store the results
 };
 
 
